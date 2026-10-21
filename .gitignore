@@ -1,0 +1,21 @@
+# Rahasia / kredensial - jangan pernah di-commit
+*.token
+*token*.txt
+*.env
+*.env.local
+.env*
+!.env.example
+*.local.md
+
+# Node
+node_modules/
+dist/
+build/
+.vercel/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
