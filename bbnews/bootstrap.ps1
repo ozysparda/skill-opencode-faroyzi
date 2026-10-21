@@ -101,27 +101,31 @@ if (-not $SkipMemory) {
   $end   = '<!-- END: skill-opencode-faroyzi -->'
   # Catatan: pakai here-string tunggal supaya backtick (markdown code) tidak
   # diperlakukan sebagai escape karakter oleh PowerShell.
+  # Marker dipakai agar blok ini bisa hidup berdampingan dengan blok bundle
+  # lain di AGENTS.md (mis. bundle free-instagram-likes).
   $template = @'
 __BEGIN__
-## Memory: skill-opencode-faroyzi
+## Memory: bundle BBNEWS (skill-opencode-faroyzi)
 
-Dokumentasi lengkap & reusable ada di repo `ozysparda/skill-opencode-faroyzi`
-(clone: `git clone https://github.com/ozysparda/skill-opencode-faroyzi.git`).
+Bundle ini berada di subfolder `bbnews/` repo `ozysparda/skill-opencode-faroyzi`
+(clone: `git clone https://github.com/ozysparda/skill-opencode-faroyzi.git`,
+lalu jalankan `bbnews\bootstrap.ps1`).
 
-- Memory indeks: `MEMORY.md`
-- Fakta proyek BBNEWS: `docs/memory/01-proyek-bbnews.md`
-- Insiden & solusi: `docs/memory/02-insiden-dan-solusi.md`
-- Alur kerja terminal: `docs/memory/03-alur-kerja-terminal.md`
-- Trik browser tools: `docs/memory/04-trik-browser-tools.md`
-- Token & kredensial: `docs/memory/05-token-dan-kredensial.md`
-- QA & baseline: `docs/memory/06-qa-dan-baseline.md`
+- Memory indeks: `bbnews/MEMORY.md`
+- Fakta proyek BBNEWS: `bbnews/docs/memory/01-proyek-bbnews.md`
+- Insiden & solusi: `bbnews/docs/memory/02-insiden-dan-solusi.md`
+- Alur kerja terminal: `bbnews/docs/memory/03-alur-kerja-terminal.md`
+- Trik browser tools: `bbnews/docs/memory/04-trik-browser-tools.md`
+- Token & kredensial: `bbnews/docs/memory/05-token-dan-kredensial.md`
+- QA & baseline: `bbnews/docs/memory/06-qa-dan-baseline.md`
 
 Skill terpasang di `~/.config/opencode/skills/`: `bbnews-deploy`,
 `github-commit-terminal`.
 
 Aturan global: jangan pernah menaruh token/password di dalam repo; verifikasi
-byte remote-vs-lokal setelah commit; data artikel harus dijaga (baseline: 3
-artikel = 2 terbit + 1 draft, 142 views).
+byte remote-vs-lokal setelah commit (ingat normalisasi CRLF/LF di Windows);
+data artikel harus dijaga (baseline terbaru: 3 artikel = 3 terbit + 0 draft,
+views naik mengikuti traffic).
 __END__
 '@
   $block = $template.Replace('__BEGIN__', $begin).Replace('__END__', $end)
@@ -152,7 +156,9 @@ if (-not $SkipClone) {
     Write-Warn "Lewati clone karena git tidak tersedia."
   } else {
     if (-not $RepoPath) {
-      $RepoPath = Join-Path (Split-Path -Parent $repoRoot) 'bbnews-git'
+      # bbnews/ -> skill-opencode-faroyzi/ -> folder kerja (luar repo)
+      $parent = Split-Path -Parent (Split-Path -Parent $repoRoot)
+      $RepoPath = Join-Path $parent 'bbnews-git'
     }
     if (Test-Path (Join-Path $RepoPath '.git')) {
       Write-Host "   Update: $RepoPath"

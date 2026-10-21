@@ -1,76 +1,72 @@
 # Skill OpenCode — Faroyzi
 
-Kumpulan **skill OpenCode** pribadi + **memory** kerja. Semuanya bisa dibawa ke
-PC mana pun: clone repo ini, jalankan `bootstrap`, skill dan memory ikut
-terpasang.
+Katalog **skill OpenCode** + **memory** kerja. Repo ini berisi beberapa
+*bundle*, masing-masing di subfolder sendiri supaya beberapa sesi OpenCode bisa
+bekerja bersamaan tanpa saling menimpa berkas.
 
-Repo ini adalah katalog tunggal — tinggal tambah folder baru di `skills/`,
-OpenCode menemukannya otomatis setelah di-install.
+| Bundle | Isi | Lokasi |
+| --- | --- | --- |
+| `bbnews/` | Skill deploy BerugakNews (BBNEWS) + commit GitHub via terminal, memory 01-06 | subfolder `bbnews/` repo ini |
+| free IG likes | Otomasi free Instagram likes | repo `ozysparda/skill-free-instagram-likes` |
 
-## Isi
+## Struktur
 
-### Skill
+```text
+skill-opencode-faroyzi/
+├── bbnews/                  <- bundle BBNEWS (skill + memory + install/bootstrap)
+│   ├── README.md
+│   ├── MEMORY.md
+│   ├── install.ps1 / install.sh
+│   ├── bootstrap.ps1 / bootstrap.sh
+│   ├── docs/memory/01..06
+│   └── skills/bbnews-deploy/, skills/github-commit-terminal/
+├── README.md                <- katalog (berkas ini)
+├── MEMORY.md                <- indeks katalog
+└── .gitignore
+```
+
+Aturan: **satu bundle = satu subfolder**. Skill & memory tidak pernah
+diletakkan langsung di root, supaya sesi lain bebas menambah bundle-nya
+tanpa bentrok.
+
+## Bundle `bbnews/`
+
+Detail lengkap + cara pakai: **[`bbnews/README.md`](bbnews/README.md)**.
 
 | Skill ID | Nama | Untuk apa |
 | --- | --- | --- |
 | `bbnews-deploy` | Deploy BerugakNews (BBNEWS) | Edit kode, commit/push, promote preview ke production, verifikasi upload gambar & data artikel |
 | `github-commit-terminal` | Commit GitHub via Terminal | Commit/push tanpa editor web GitHub, setup token, verifikasi hasil commit, recovery |
 
-### Memory (dokumentasi lengkap)
-
-| Berkas | Isi |
+| Memory | Isi |
 | --- | --- |
-| `MEMORY.md` | Indeks seluruh pengetahuan + aturan emas |
-| `docs/memory/01-proyek-bbnews.md` | Fakta proyek: GitHub, Vercel, Blob, admin, struktur kode, alur upload |
-| `docs/memory/02-insiden-dan-solusi.md` | Semua error nyata + penyebab + perbaikan (dengan pesan error asli) |
-| `docs/memory/03-alur-kerja-terminal.md` | Alur end-to-end: clone, edit, commit, push, promote, verifikasi, rollback |
-| `docs/memory/04-trik-browser-tools.md` | Trik tool browser OpenCode + jebakan (CodeMirror, CORS, base64, PowerShell) |
-| `docs/memory/05-token-dan-kredensial.md` | Token Vercel/GitHub, lokasi simpan, pembuatan, rotasi, risiko |
-| `docs/memory/06-qa-dan-baseline.md` | Checklist QA, angka baseline, cara memastikan data tidak rusak |
+| [`bbnews/MEMORY.md`](bbnews/MEMORY.md) | Indeks pengetahuan + aturan emas |
+| [`bbnews/docs/memory/01-proyek-bbnews.md`](bbnews/docs/memory/01-proyek-bbnews.md) | Fakta proyek: GitHub, Vercel, Blob, admin, struktur kode, alur upload |
+| [`bbnews/docs/memory/02-insiden-dan-solusi.md`](bbnews/docs/memory/02-insiden-dan-solusi.md) | Semua error nyata + penyebab + perbaikan (pesan error asli) |
+| [`bbnews/docs/memory/03-alur-kerja-terminal.md`](bbnews/docs/memory/03-alur-kerja-terminal.md) | Alur end-to-end: clone, edit, commit, push, promote, verifikasi, rollback |
+| [`bbnews/docs/memory/04-trik-browser-tools.md`](bbnews/docs/memory/04-trik-browser-tools.md) | Trik tool browser OpenCode + jebakan (CodeMirror, CORS, base64, PowerShell) |
+| [`bbnews/docs/memory/05-token-dan-kredensial.md`](bbnews/docs/memory/05-token-dan-kredensial.md) | Token Vercel/GitHub, lokasi simpan, pembuatan, rotasi, risiko |
+| [`bbnews/docs/memory/06-qa-dan-baseline.md`](bbnews/docs/memory/06-qa-dan-baseline.md) | Checklist QA, angka baseline, cara memastikan data tidak rusak |
 
-## Cara pakai di PC lain (1 perintah)
+### Setup PC baru (1 perintah)
 
-```bash
+```powershell
 git clone https://github.com/ozysparda/skill-opencode-faroyzi.git
 cd skill-opencode-faroyzi
+powershell -ExecutionPolicy Bypass -File .\bbnews\bootstrap.ps1
 ```
 
-**Windows (PowerShell)**
+`bbnews\bootstrap.ps1` akan: memastikan Git terpasang, memasang skill ke
+`~/.config/opencode/skills/`, memasang blok memory ke `~/.config/opencode/AGENTS.md`
+(marker `BEGIN/END: skill-opencode-faroyzi`, jadi aman berdampingan dengan
+bundle lain), clone repo kerja BBNEWS, dan menyiapkan credential git.
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\bootstrap.ps1
-```
-
-**macOS / Linux**
-
-```bash
-chmod +x bootstrap.sh install.sh
-./bootstrap.sh
-```
-
-`bootstrap` akan:
-
-1. Memastikan Git terpasang (bisa otomatis via winget).
-2. Menginstal semua skill ke `~/.config/opencode/skills/`.
-3. Memasang memory global di `~/.config/opencode/AGENTS.md` (dibuat/di-update
-   otomatis, aman dijalankan berulang).
-4. Clone/update repo kerja BBNEWS ke `<sibling>/bbnews-git` (branch `vercel`).
-5. Menyiapkan credential git bila file token GitHub tersedia.
-
-Opsi yang berguna:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\bootstrap.ps1 -SkipGitInstall -SkipClone
-powershell -ExecutionPolicy Bypass -File .\bootstrap.ps1 -TokenFile D:\secure\github-token.txt
-```
-
-Tanpa `bootstrap`, cukup jalankan `install.ps1` (Windows) atau `install.sh`
-(macOS/Linux) untuk memasang skill saja.
+macOS/Linux: `./bbnews/bootstrap.sh`
 
 ### Yang TIDAK dibawa
 
 Token & password **tidak** ada di repo ini (`.gitignore` juga menolak file
-token). Untuk PC baru:
+token dan `*.local.md`). Untuk PC baru:
 
 1. Buat GitHub PAT: <https://github.com/settings/tokens/new> — scope `repo`,
    *No expiration*.
@@ -78,7 +74,7 @@ token). Untuk PC baru:
    scope *Full Account*, *No expiration*.
 3. Simpan di luar repo, mis. `%TEMP%\opencode\github-token.txt` dan
    `%TEMP%\opencode\vercel-token.txt`.
-4. Jalankan `bootstrap.ps1 -TokenFile <path>`.
+4. Jalankan `bbnews\bootstrap.ps1 -TokenFile <path>`.
 
 ## Cara install skill saja
 
@@ -88,22 +84,28 @@ token). Untuk PC baru:
 | Project | `.opencode/skills/` (dari folder kerja sampai root proyek) |
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\install.ps1     # Windows
-./install.sh                                               # macOS/Linux
+powershell -ExecutionPolicy Bypass -File .\bbnews\install.ps1   # Windows
+./bbnews/install.sh                                            # macOS/Linux
 ```
 
 Folder yang sudah ada ditimpa. Jalankan ulang setiap kali isi skill berubah.
 Cek hasilnya: buka sesi OpenCode baru, skill muncul di daftar skill yang
 tersedia, atau dipanggil manual dengan `@bbnews-deploy`.
 
-## Menambah skill baru
+## Menambah bundle / skill baru
 
 ```text
-skills/
-└── nama-skill/              <- ID skill = nama folder (kebab-case)
-    ├── SKILL.md             <- wajib, nama file harus persis SKILL.md
-    ├── references/          <- dokumen pendukung, dibaca saat perlu
-    └── scripts/             <- skrip yang bisa dijalankan agen
+<nama-bundle>/
+├── README.md                <- penjelasan bundle
+├── MEMORY.md                <- indeks pengetahuan bundle
+├── install.ps1 / install.sh
+├── bootstrap.ps1 / bootstrap.sh
+├── docs/memory/..           <- dokumentasi
+└── skills/
+    └── nama-skill/          <- ID skill = nama folder (kebab-case)
+        ├── SKILL.md         <- wajib, nama file harus persis SKILL.md
+        ├── references/      <- dokumen pendukung, dibaca saat perlu
+        └── scripts/         <- skrip yang bisa dijalankan agen
 ```
 
 Aturan penting:
@@ -120,10 +122,13 @@ Aturan penting:
   ```
 
 - `description` menjelaskan **kondisi pemakaian**, bukan cuma isi — itu yang
-  dibaca agen untuk memutuskan memanggil skill atau tidak.
+  dibaca agen untuk Decide memanggil skill atau tidak.
 - Sembunyikan skill dari daftar otomatis dengan `metadata:` ->
   `opencode/autoinvoke: false`.
 - Path di dalam skill relatif terhadap folder skill tersebut.
+- Blok memory di `AGENTS.md` pakai marker `BEGIN/END: <nama-bundle>` supaya
+  tiap bundle bisa memasang/memperbarui bagiannya sendiri tanpa menimpa
+  bundle lain.
 - Jangan taruh token/password di repo ini. Rujuk ke file di luar repo
   (mis. `%TEMP%\opencode\github-token.txt`) atau variabel lingkungan.
 
@@ -131,11 +136,12 @@ Aturan penting:
 
 1. Jangan pernah menaruh token/password/`.env` di dalam repo.
 2. Data artikel adalah aset utama — setelah deploy, selalu cek jumlah artikel
-   (baseline: 3 artikel = 2 terbit + 1 draft, 142 views).
+   (baseline terbaru: 3 artikel = 3 terbit + 0 draft; views naik sesuai traffic).
 3. Editor web GitHub bukan alat utama — selalu terminal (`git commit` + `push`).
 4. Jangan mengirim base64 panjang di dalam panggilan tool — ambil dari URL
    atau kirim byte apa adanya.
-5. Verifikasi byte-per-byte setelah commit, bukan hanya "commit sukses".
+5. Verifikasi byte-per-byte setelah commit, bukan hanya "commit sukses"
+   (normalisasi CRLF/LF saat membandingkan di Windows).
 
 ## Referensi
 

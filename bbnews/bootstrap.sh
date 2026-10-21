@@ -14,7 +14,7 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 skip_clone=0
 skip_memory=0
 token_file="${GITHUB_TOKEN_FILE:-${TMPDIR:-/tmp}/opencode/github-token.txt}"
-bbnews_path="${BBNEWS_PATH:-$(dirname "$repo_root")/bbnews-git}"
+bbnews_path="${BBNEWS_PATH:-$(dirname "$(dirname "$repo_root")")/bbnews-git}"
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -59,14 +59,15 @@ if [ "$skip_memory" -eq 0 ]; then
   else
     {
       echo "$begin"
-      echo "## Memory: skill-opencode-faroyzi"
+      echo "## Memory: bundle BBNEWS (skill-opencode-faroyzi)"
       echo
-      echo "Dokumentasi lengkap ada di repo \`ozysparda/skill-opencode-faroyzi\`."
-      echo "Memory indeks: MEMORY.md | docs/memory/01..07"
+      echo "Bundle ini di subfolder \`bbnews/\` repo \`ozysparda/skill-opencode-faroyzi\`."
+      echo "Memory indeks: bbnews/MEMORY.md | bbnews/docs/memory/01..06"
       echo "Skill terpasang: bbnews-deploy, github-commit-terminal."
       echo
       echo "Aturan global: jangan menaruh token/password di repo; verifikasi byte"
-      echo "remote-vs-lokal setelah commit; jaga data artikel (baseline 3 artikel)."
+      echo "remote-vs-lokal setelah commit (normalisasi CRLF/LF); jaga data artikel"
+      echo "(baseline terbaru: 3 artikel = 3 terbit + 0 draft)."
       echo "$end"
     } >> "$agents"
     echo "   [OK] AGENTS.md diperbarui: $agents"

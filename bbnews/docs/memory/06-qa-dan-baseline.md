@@ -1,4 +1,4 @@
-# 06 — QA, Baseline & Pemeriksaan Data
+﻿# 06 — QA, Baseline & Pemeriksaan Data
 
 ## 6.1 Baseline proyek (per Oktober 2026)
 
@@ -92,7 +92,7 @@ $d.meta.githubCommitSha
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File `
-  '...\skills\bbnews-deploy\scripts\verify-remote-file.ps1' `
+  '...\bbnews\skills\bbnews-deploy\scripts\verify-remote-file.ps1' `
   -Path 'artifacts/balebeleq-web/src/pages/admin/article-form.tsx'
 ```
 

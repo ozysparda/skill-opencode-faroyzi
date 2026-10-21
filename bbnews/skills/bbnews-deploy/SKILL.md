@@ -1,4 +1,4 @@
----
+﻿---
 name: Deploy BerugakNews (BBNEWS)
 description: Kelola dan deploy situs BerugakNews (repo BBNEWS, proyek Vercel bbnews) lewat terminal - edit kode, commit/push ke GitHub, promote preview ke production, serta memverifikasi upload gambar dan integritas data artikel.
 ---
@@ -16,15 +16,15 @@ Masalah nyata yang pernah terjadi beserta solusinya ada di
 `references/troubleshooting.md`. Baca berkas itu kalau butuh detail.
 
 Dokumentasi paling lengkap (semua insiden, perintah lengkap, checklist QA)
-berada di repo skill `ozysparda/skill-opencode-faroyzi`:
+berada di bundle `bbnews/` dalam repo skill `ozysparda/skill-opencode-faroyzi`:
 
-- `MEMORY.md` - indeks pengetahuan
-- `docs/memory/01-proyek-bbnews.md` - fakta proyek
-- `docs/memory/02-insiden-dan-solusi.md` - insiden & solusi
-- `docs/memory/03-alur-kerja-terminal.md` - alur kerja lengkap
-- `docs/memory/04-trik-browser-tools.md` - trik & jebakan tool browser
-- `docs/memory/05-token-dan-kredensial.md` - token & kredensial
-- `docs/memory/06-qa-dan-baseline.md` - QA & baseline data
+- `bbnews/MEMORY.md` - indeks pengetahuan
+- `bbnews/docs/memory/01-proyek-bbnews.md` - fakta proyek
+- `bbnews/docs/memory/02-insiden-dan-solusi.md` - insiden & solusi
+- `bbnews/docs/memory/03-alur-kerja-terminal.md` - alur kerja lengkap
+- `bbnews/docs/memory/04-trik-browser-tools.md` - trik & jebakan tool browser
+- `bbnews/docs/memory/05-token-dan-kredensial.md` - token & kredensial
+- `bbnews/docs/memory/06-qa-dan-baseline.md` - QA & baseline data
 
 ## Kapan skill ini dipakai
 
@@ -79,7 +79,7 @@ Pakai skrip yang sudah disiapkan:
 ```powershell
 $env:VERCEL_TOKEN = ((Get-Content "$env:TEMP\opencode\vercel-token.txt") | Select-String 'vcp_').ToString().Trim()
 $env:VERCEL_TEAM_ID = 'ozyyyy310304s-projects'
-powershell -ExecutionPolicy Bypass -File .\skills\bbnews-deploy\scripts\promote-latest.ps1 -Branch vercel
+powershell -ExecutionPolicy Bypass -File .\bbnews\skills\bbnews-deploy\scripts\promote-latest.ps1 -Branch vercel
 ```
 
 Skrip mencari deployment preview terbaru yang `READY`, melakukan promote dengan
@@ -89,7 +89,7 @@ aktif (`berugaknews.vercel.app`, `berugaknews.com`, `www.berugaknews.com`).
 Untuk promote deployment tertentu:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\skills\bbnews-deploy\scripts\promote-latest.ps1 -DeploymentId dpl_xxx
+powershell -ExecutionPolicy Bypass -File .\bbnews\skills\bbnews-deploy\scripts\promote-latest.ps1 -DeploymentId dpl_xxx
 ```
 
 Alternatif tanpa skrip (curl):
@@ -105,7 +105,7 @@ curl -sS -X POST "https://api.vercel.com/v13/deployments?teamId=$VERCEL_TEAM_ID"
 a. **Cek file di GitHub benar-benar berubah** (bandingkan byte, bukan mata):
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\skills\bbnews-deploy\scripts\verify-remote-file.ps1 `
+powershell -ExecutionPolicy Bypass -File .\bbnews\skills\bbnews-deploy\scripts\verify-remote-file.ps1 `
   -Path 'artifacts/balebeleq-web/src/pages/admin/article-form.tsx'
 ```
 

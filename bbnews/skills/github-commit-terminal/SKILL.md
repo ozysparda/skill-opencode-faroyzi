@@ -1,4 +1,4 @@
----
+﻿---
 name: Commit GitHub via Terminal
 description: Commit dan push perubahan ke GitHub memakai git di terminal dengan personal access token yang tersimpan, termasuk setup kredensial, verifikasi hasil commit, dan pemulihan saat editor web GitHub tidak bisa dipakai.
 ---
@@ -29,9 +29,10 @@ karena hanya memuat viewport.
 | Repo BBNEWS | `C:\Users\Dunia Imajinasiku\Documents\Default Project\bbnews-git` |
 
 Detail pembuatan token ada di `references/setup-token.md`.
-Versi paling lengkap ada di repo skill `ozysparda/skill-opencode-faroyzi` ->
-`docs/memory/05-token-dan-kredensial.md` (termasuk rotasi & penanganan kebocoran)
-dan `docs/memory/04-trik-browser-tools.md` (jebakan tool browser).
+Versi paling lengkap ada di bundle `bbnews/` repo `ozysparda/skill-opencode-faroyzi`
+-> `bbnews/docs/memory/05-token-dan-kredensial.md` (rotasi & penanganan
+kebocoran) dan `bbnews/docs/memory/04-trik-browser-tools.md` (jebakan tool
+browser).
 
 ## Alur kerja
 
@@ -72,7 +73,7 @@ supaya tidak menggantung di terminal.
 Bandingkan byte berkas remote dengan lokal:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\skills\bbnews-deploy\scripts\verify-remote-file.ps1 `
+powershell -ExecutionPolicy Bypass -File .\bbnews\skills\bbnews-deploy\scripts\verify-remote-file.ps1 `
   -Path '<path-relatif-di-repo>'
 ```
 

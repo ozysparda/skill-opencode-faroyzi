@@ -1,4 +1,4 @@
-# 03 — Alur Kerja Terminal (end-to-end)
+﻿# 03 — Alur Kerja Terminal (end-to-end)
 
 Semua perintah di bawah memakai **PowerShell** di Windows. Jalur git dibungkus
 variabel `$git` supaya aman dipakai di PC lain.
@@ -68,7 +68,7 @@ $env:VERCEL_TOKEN  = ((Get-Content "$env:TEMP\opencode\vercel-token.txt") | Sele
 $env:VERCEL_TEAM_ID = 'ozyyyy310304s-projects'
 
 powershell -ExecutionPolicy Bypass -File `
-  'C:\Users\Dunia Imajinasiku\Documents\Default Project\skill-opencode-faroyzi\skills\bbnews-deploy\scripts\promote-latest.ps1' `
+  'C:\Users\Dunia Imajinasiku\Documents\Default Project\skill-opencode-faroyzi\bbnews\skills\bbnews-deploy\scripts\promote-latest.ps1' `
   -Branch vercel
 ```
 
@@ -116,7 +116,7 @@ a. **Byte remote == byte lokal**
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File `
-  '...\skill-opencode-faroyzi\skills\bbnews-deploy\scripts\verify-remote-file.ps1' `
+  '...\skill-opencode-faroyzi\bbnews\skills\bbnews-deploy\scripts\verify-remote-file.ps1' `
   -Path 'artifacts/balebeleq-web/src/pages/admin/article-form.tsx'
 ```
 
