@@ -15,8 +15,6 @@ OpenCode menemukannya otomatis setelah di-install.
 | --- | --- | --- |
 | `bbnews-deploy` | Deploy BerugakNews (BBNEWS) | Edit kode, commit/push, promote preview ke production, verifikasi upload gambar & data artikel |
 | `github-commit-terminal` | Commit GitHub via Terminal | Commit/push tanpa editor web GitHub, setup token, verifikasi hasil commit, recovery |
-| `free-instagram-likes` | Free Instagram Likes Automation | Otomasi klaim free IG likes (repo `ozysparda/gh-free-likes`) |
-| `free-instagram-likes` | Free Instagram Likes Automation | Klaim free IG likes dari 46 SMM panel (tanpa password IG), captcha multi-provider, temp-mail OTP, jadwal penuh di GitHub Actions |
 
 ### Memory (dokumentasi lengkap)
 
@@ -29,8 +27,6 @@ OpenCode menemukannya otomatis setelah di-install.
 | `docs/memory/04-trik-browser-tools.md` | Trik tool browser OpenCode + jebakan (CodeMirror, CORS, base64, PowerShell) |
 | `docs/memory/05-token-dan-kredensial.md` | Token Vercel/GitHub, lokasi simpan, pembuatan, rotasi, risiko |
 | `docs/memory/06-qa-dan-baseline.md` | Checklist QA, angka baseline, cara memastikan data tidak rusak |
-| `docs/memory/07-ig-likes-automation.md` | Automation free IG likes: arsitektur GH Actions, registry service, keputusan & alasan, peta error, trik anti-bot |
-| `docs/memory/08-kredensial-ig-likes.local.md` | *(lokal, tidak di-commit)* kredensial panel SMM, API key captcha, mail.tm |
 
 ## Cara pakai di PC lain (1 perintah)
 

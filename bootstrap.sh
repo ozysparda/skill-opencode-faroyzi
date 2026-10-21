@@ -63,13 +63,10 @@ if [ "$skip_memory" -eq 0 ]; then
       echo
       echo "Dokumentasi lengkap ada di repo \`ozysparda/skill-opencode-faroyzi\`."
       echo "Memory indeks: MEMORY.md | docs/memory/01..07"
-      echo "Automation free IG likes: docs/memory/07-ig-likes-automation.md"
-      echo "Skill terpasang: bbnews-deploy, github-commit-terminal, free-instagram-likes."
+      echo "Skill terpasang: bbnews-deploy, github-commit-terminal."
       echo
       echo "Aturan global: jangan menaruh token/password di repo; verifikasi byte"
-      echo "remote-vs-lokal setelah commit; jaga data artikel (baseline 3 artikel);"
-      echo "jangan pernah memberi password Instagram ke tool/service; jangan"
-      echo "percaya status sukses tanpa verifikasi frasa konfirmasi yang strict."
+      echo "remote-vs-lokal setelah commit; jaga data artikel (baseline 3 artikel)."
       echo "$end"
     } >> "$agents"
     echo "   [OK] AGENTS.md diperbarui: $agents"

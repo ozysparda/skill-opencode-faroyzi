@@ -115,16 +115,13 @@ Dokumentasi lengkap & reusable ada di repo `ozysparda/skill-opencode-faroyzi`
 - Trik browser tools: `docs/memory/04-trik-browser-tools.md`
 - Token & kredensial: `docs/memory/05-token-dan-kredensial.md`
 - QA & baseline: `docs/memory/06-qa-dan-baseline.md`
-- Automation free IG likes: `docs/memory/07-ig-likes-automation.md`
 
 Skill terpasang di `~/.config/opencode/skills/`: `bbnews-deploy`,
-`github-commit-terminal`, `free-instagram-likes`.
+`github-commit-terminal`.
 
 Aturan global: jangan pernah menaruh token/password di dalam repo; verifikasi
 byte remote-vs-lokal setelah commit; data artikel harus dijaga (baseline: 3
-artikel = 2 terbit + 1 draft, 142 views); JANGAN pernah memberikan password
-Instagram ke tool/service mana pun; jangan percaya status "sukses" tanpa
-verifikasi frasa konfirmasi yang strict.
+artikel = 2 terbit + 1 draft, 142 views).
 __END__
 '@
   $block = $template.Replace('__BEGIN__', $begin).Replace('__END__', $end)
