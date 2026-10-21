@@ -18,6 +18,7 @@ beberapa sesi bisa bekerja bersamaan tanpa saling menimpa berkas.
 | `bbnews/docs/memory/04-trik-browser-tools.md` | Cara pakai tool browser OpenCode, termasuk jebakan (CodeMirror, CORS, base64) |
 | `bbnews/docs/memory/05-token-dan-kredensial.md` | Token Vercel & GitHub, lokasi penyimpanan, pembuatan, rotasi, risikonya |
 | `bbnews/docs/memory/06-qa-dan-baseline.md` | Checklist QA, angka baseline, cara memastikan data tidak rusak |
+| `bbnews/docs/memory/07-skill-opencode-dan-audit.md` | Standar skill OpenCode (discovery, presedensi, format) + hasil audit semua skill & perbaikannya |
 
 ## Aturan emas ( berlaku di semua bundle)
 
@@ -35,3 +36,10 @@ beberapa sesi bisa bekerja bersamaan tanpa saling menimpa berkas.
    root repo katalog.
 8. **Kredensial lokal** (password panel, API key) ditulis di file
    `*.local.md` yang di-ignore git, bukan di dokumen yang di-commit.
+9. **Skill OpenCode hanya dibaca dari `SKILL.md`** (bukan `skill.json`).
+10. **`skills` di config OpenCode = array path**, bukan object.
+11. **Presedensi skill: project > global.** Salinan di `.opencode/skills/`
+    mengalahkan versi global meski lebih lama.
+12. **File `.ps1` untuk Windows PowerShell 5.1 disimpan dengan UTF-8 + BOM.**
+13. **Cek `visibility` repo sebelum push** - repo yang pernah public masih
+    menyimpan kredensial lama di riwayat git.

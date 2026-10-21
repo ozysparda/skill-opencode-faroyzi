@@ -47,6 +47,7 @@ Detail lengkap + cara pakai: **[`bbnews/README.md`](bbnews/README.md)**.
 | [`bbnews/docs/memory/04-trik-browser-tools.md`](bbnews/docs/memory/04-trik-browser-tools.md) | Trik tool browser OpenCode + jebakan (CodeMirror, CORS, base64, PowerShell) |
 | [`bbnews/docs/memory/05-token-dan-kredensial.md`](bbnews/docs/memory/05-token-dan-kredensial.md) | Token Vercel/GitHub, lokasi simpan, pembuatan, rotasi, risiko |
 | [`bbnews/docs/memory/06-qa-dan-baseline.md`](bbnews/docs/memory/06-qa-dan-baseline.md) | Checklist QA, angka baseline, cara memastikan data tidak rusak |
+| [`bbnews/docs/memory/07-skill-opencode-dan-audit.md`](bbnews/docs/memory/07-skill-opencode-dan-audit.md) | Standar skill OpenCode (discovery, presedensi, format) + hasil audit semua skill & perbaikannya |
 
 ### Setup PC baru (1 perintah)
 
@@ -142,6 +143,10 @@ Aturan penting:
    atau kirim byte apa adanya.
 5. Verifikasi byte-per-byte setelah commit, bukan hanya "commit sukses"
    (normalisasi CRLF/LF saat membandingkan di Windows).
+6. Skill OpenCode dibaca dari `SKILL.md` saja; `skills` di config = array path;
+   presedensi project > global; file `.ps1` untuk PS 5.1 = UTF-8 + BOM.
+7. Cek `visibility` repo sebelum push — repo yang pernah public masih menyimpan
+   kredensial lama di riwayat git.
 
 ## Referensi
 

@@ -62,12 +62,14 @@ if [ "$skip_memory" -eq 0 ]; then
       echo "## Memory: bundle BBNEWS (skill-opencode-faroyzi)"
       echo
       echo "Bundle ini di subfolder \`bbnews/\` repo \`ozysparda/skill-opencode-faroyzi\`."
-      echo "Memory indeks: bbnews/MEMORY.md | bbnews/docs/memory/01..06"
+      echo "Memory indeks: bbnews/MEMORY.md | bbnews/docs/memory/01..07"
       echo "Skill terpasang: bbnews-deploy, github-commit-terminal."
       echo
       echo "Aturan global: jangan menaruh token/password di repo; verifikasi byte"
       echo "remote-vs-lokal setelah commit (normalisasi CRLF/LF); jaga data artikel"
       echo "(baseline terbaru: 3 artikel = 3 terbit + 0 draft)."
+      echo "Standar skill: SKILL.md (bukan skill.json); skills di config = array;"
+      echo "presedensi project > global; .ps1 untuk PS 5.1 = UTF-8 + BOM."
       echo "$end"
     } >> "$agents"
     echo "   [OK] AGENTS.md diperbarui: $agents"

@@ -118,6 +118,7 @@ lalu jalankan `bbnews\bootstrap.ps1`).
 - Trik browser tools: `bbnews/docs/memory/04-trik-browser-tools.md`
 - Token & kredensial: `bbnews/docs/memory/05-token-dan-kredensial.md`
 - QA & baseline: `bbnews/docs/memory/06-qa-dan-baseline.md`
+- Standar skill OpenCode + audit semua skill: `bbnews/docs/memory/07-skill-opencode-dan-audit.md`
 
 Skill terpasang di `~/.config/opencode/skills/`: `bbnews-deploy`,
 `github-commit-terminal`.
@@ -126,6 +127,11 @@ Aturan global: jangan pernah menaruh token/password di dalam repo; verifikasi
 byte remote-vs-lokal setelah commit (ingat normalisasi CRLF/LF di Windows);
 data artikel harus dijaga (baseline terbaru: 3 artikel = 3 terbit + 0 draft,
 views naik mengikuti traffic).
+
+Standar skill (detail di dokumen 07): skill hanya dibaca dari `SKILL.md`
+(bukan `skill.json`); `skills` di config OpenCode harus array path;
+presedensi project > global (salinan di `.opencode/skills/` mengalahkan versi
+global); file `.ps1` untuk Windows PowerShell 5.1 disimpan dengan UTF-8 + BOM.
 __END__
 '@
   $block = $template.Replace('__BEGIN__', $begin).Replace('__END__', $end)
