@@ -44,6 +44,12 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
+# PENTING: output native command (git) harus dibaca sebagai UTF-8. Tanpa ini
+# PowerShell memakai codepage console (CP437/CP850) dan karakter non-ASCII
+# (mis. "±") jadi rusak -> file yang sebenarnya sama dilaporkan "BERBEDA".
+try { [Console]::OutputEncoding = [Text.Encoding]::UTF8 } catch { }
+$OutputEncoding = [Text.Encoding]::UTF8
+
 function Normalize([string]$text) {
   if ($null -eq $text) { return '' }
   $t = $text -replace "`r`n", "`n"
