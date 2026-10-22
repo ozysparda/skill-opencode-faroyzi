@@ -48,6 +48,24 @@ BBNEWS/
   `berugaknews.vercel.app`, `berugaknews.com`, `www.berugaknews.com`,
   `bbnews-ozyyyy310304s-projects.vercel.app`.
 
+## 1.5 Fitur Berugak Donasi (aktif sejak Oktober 2026)
+
+Fitur baru: admin bisa mem-post campaign donasi (judul, tulisan campaign kaya,
+QR/QRIS, rekening, wallet kripto, target, deadline), donatur scan QR/transfer,
+auto-konfirmasi untuk kripto (cek tx hash), manual konfirmasi admin untuk QRIS
+dan transfer bank.
+
+- Route publik: `/donasi`, `/donasi/:slug`, `/donasi/lacak`
+- Route admin: `/admin/donasi`, `/admin/donasi/baru`, `/admin/donasi/transaksi`,
+  `/admin/donasi/pengaturan`, `/admin/donasi/:id/edit`
+- Tabel DB baru: `donation_campaigns`, `donation_transactions`,
+  `donation_settings` (di Neon Postgres, dibuat otomatis saat build Vercel via
+  `lib/db/scripts/apply-donations-schema.mjs`).
+- Endpoint: `/api/donations/*` (publik) + `/api/admin/donations/*` (admin JWT).
+- Auto-konfirmasi hanya kripto; QRIS & bank = manual konfirmasi admin.
+- Konsep lanjutan (belum diimplementasi): Berugak Founding & Beasiswa Berugak
+  -> lihat `08-konsep-berugak-donasi-founding-beasiswa.md`.
+
 Riwayat deployment penting:
 
 | Deployment | Commit | State | Catatan |

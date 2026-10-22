@@ -129,3 +129,25 @@ Route admin: `/admin/donasi`, `/admin/donasi/baru`, `/admin/donasi/transaksi`,
   (blob client token, path `uploads/donasi/`, rate limit 8/jam/IP).
 - Campaign `draft|active|closed|archived`; transaksi `pending|verified|rejected`
   (+ flag `autoVerified`).
+
+
+## 4. Status final (selesai)
+
+- Commit pertama: `d38f3e4` (feat: Berugak Donasi).
+- Commit perbaikan keamanan: `89de2b6` (validasi input, retry ref, batasi publik,
+  harden IP rate-limit).
+- Push ke branch `vercel`: sukses (`d38f3e4..89de2b6`).
+- Deployment preview: `dpl_9NfFWe5ojctKQbAcVNLLdSM5mKh3` (READY).
+- Deployment production (promote): `dpl_FUAXTotere9FGL5GRXwX8eDqoirG` (READY).
+- Migrasi skema DB: sukses ("Skema Berugak Donasi siap").
+- Typecheck: lulus (api-server + balebeleq-web + scripts + libs).
+- Pen-test: semua skenario lulus -- auth bypass 401, bad token 401, SQLi handled,
+  webhook inactive 404, draft campaign tidak publik 404, invalid method 400,
+  negative amount 400, bad email 400, long name/message/hash 400, IDOR 404,
+  tracking wrong-email 404, crypto fake hash tidak auto-verify, anonim dimasking
+  ("Hamba Tuhan"), getClientIp pakai req.ip (anti-spoof).
+- Admin endpoint di production: stats/campaigns/settings OK (login production OK).
+
+Fitur Berugak Donasi sekarang **tayang di production** (`berugaknews.vercel.app`).
+Berugak Founding & Beasiswa Berugak masih konsep (Fase 2/3) -- lihat
+`08-konsep-berugak-donasi-founding-beasiswa.md`.
