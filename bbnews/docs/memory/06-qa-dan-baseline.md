@@ -9,8 +9,11 @@
 | Artikel draft | **0** |
 | Total views | **174** (naik wajar dari 142 -> traffic) |
 | Artikel publik via API | **3** |
-| Deployment production aktif | `dpl_HDoRxfQ8fLnpWpfYBGL8rF4BYYsZ` (commit `d869aae`) |
+| Deployment production aktif | `dpl_F6MwZLPbmgGX6fa4v3Ci4rMWyh8u` (commit `4378dd6`) |
 | Store blob | `bbnews-foto` / `store_9LikF3DMJKdbhRnr` |
+| Campaign donasi | 1 (`Full Test`, id=11 — dibuat sebelum sesi QRIS, bukan campaign uji sesi ini) |
+| Transaksi donasi | 1 (`rejected` — transaksi uji browser sesi QRIS, sudah ditandai catatan) |
+| `donation_settings.qris_fee_bps` | **0** (MDR belum diisi user; 0 = tidak ada biaya tambahan) |
 
 Angka-angka ini dipakai sebagai **baseline pembanding**. Kalau setelah deploy
 jumlah artikel berubah turun, ada yang salah dan harus dicek (kemungkinan
@@ -111,7 +114,19 @@ Urutan pemeriksaan (JANGAN langsung menebak):
 4. Jangan pernah menjalankan `DROP`/`TRUNCATE`/migrasi destruktif tanpa izin
    eksplisit pemilik proyek.
 
-## 6.8 Jejak audit versi
+## 6.9 Membersihkan transaksi donasi uji
+
+- **Tidak ada endpoint DELETE untuk transaksi** (hanya `PATCH` status/
+  `adminNote`). Cara resmi: `PATCH /api/admin/donations/transactions/:id`
+  dengan `{ "status": "rejected", "adminNote": "transaksi uji ..." }`.
+- Menghapus **campaign** (`DELETE /api/admin/donations/campaigns/:id`) cascade
+  ke transaksinya -> cara paling bersih untuk data uji.
+- Akses DB langsung (Neon) **tidak bisa** dari file env lokal: `vercel env
+  pull` menghasilkan nilai `[SENSITIVE]` untuk `DATABASE_URL`/`POSTGRES_URL`
+  (env sensitive tidak dibaca token API). Jangan dump isi `.env.production`
+  ke chat/repo.
+
+## 6.10 Jejak audit versi
 
 | Tanggal | Commit | Deployment | Status |
 | --- | --- | --- | --- |
@@ -120,3 +135,9 @@ Urutan pemeriksaan (JANGAN langsung menebak):
 | 2026-10 | `d869aae` | `dpl_EebFRSkGB3jfHAW88Su2JotsdDyp` | preview READY |
 | 2026-10 | `d869aae` | `dpl_DGJ5gpp8b337mWXSaKBs6zsnToVv` | production READY |
 | 2026-10 | `d869aae` | `dpl_HDoRxfQ8fLnpWpfYBGL8rF4BYYsZ` | production READY (promote ulang saat menguji skrip) |
+| 2026-10 | `22e4a05` | `dpl_EqfgXRDhQoZ6PNLk5QWSU1HcgFwT` | production READY — payment global (QRIS/bank/kripto) |
+| 2026-10 | `1870054` | `dpl_GsC6esqRBpmA1sovtv36yGUjz1BC` | production READY — fix `min_amount` NOT NULL |
+| 2026-10 | `2534218` | `dpl_Hk6z1LGvsuzF98PziJNsWj7FJmxF` | production READY — identitas donatur opsional/anonim |
+| 2026-10 | `24f5ace` | `dpl_G519VHCviXtpviRE2NfPvyp9mv1B` | production READY — fix regex email (double-backslash) |
+| 2026-10 | `4378dd6` | `dpl_3Tu7E3cz2YJucDrR89TGufZfV3CX` | preview READY — QRIS dinamis lokal + biaya MDR |
+| 2026-10 | `4378dd6` | `dpl_F6MwZLPbmgGX6fa4v3Ci4rMWyh8u` | production READY — QRIS dinamis lokal (tag 54) + biaya MDR ditanggung donatur |

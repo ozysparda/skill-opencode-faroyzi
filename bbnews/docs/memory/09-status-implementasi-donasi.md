@@ -151,3 +151,130 @@ Route admin: `/admin/donasi`, `/admin/donasi/baru`, `/admin/donasi/transaksi`,
 Fitur Berugak Donasi sekarang **tayang di production** (`berugaknews.vercel.app`).
 Berugak Founding & Beasiswa Berugak masih konsep (Fase 2/3) -- lihat
 `08-konsep-berugak-donasi-founding-beasiswa.md`.
+
+---
+
+## 5. Update 22 Oktober 2026 (sesi lanjutan, ~16:00-17:00)
+
+### Yang sudah ditambahkan
+
+1. **Identitas donatur opsional + mode anonim** (commit `2534218`).
+   - Nama opsional bila `isAnonymous=true` (fallback "Hamba Tuhan").
+   - Email & WhatsApp **tidak disimpan sama sekali** saat anonim (kolom NULL).
+   - Email & WhatsApp opsional di form publik; dipakai sebagai verifikasi 2
+     faktor saat melacak donasi.
+   - Frontend: checkbox "Saya ingin menyembunyikan identitas saya" dipindah ke
+     atas form; field kontak disembunyikan saat anonim.
+   - OpenAPI: `DonationTransactionInput.donorName` tidak required lagi.
+2. **Fix bug `min_amount` NOT NULL** (commit `1870054`) — DDL di
+   `lib/db/scripts/apply-donations-schema.mjs`, bukan di handler.
+3. **Fix regex validasi email** (commit `24f5ace`) — regression sejak `89de2b6`.
+   Regex sempat `/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/` (double backslash) sehingga
+   **semua email ditolak** (`\\.` artinya backslash literal). Sudah diganti
+   `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`. Scan seluruh repo: tidak ada bug serupa.
+4. **QRIS payload** sudah di-decode dari gambar WhatsApp dan disimpan lewat
+   `PUT /api/admin/donations/settings` (220 char, `00020101021126610014...`).
+
+### Baseline terbaru (production)
+
+- Deployment production: `dpl_G519VHCviXtpviRE2NfPvyp9mv1B` (commit `24f5ace`).
+- Alias `berugaknews.vercel.app` -> deployment tsb.
+- Pen-test form donasi (production): email valid OK, email rusak 400, anonim
+  tanpa nama OK ("Hamba Tuhan"), non-anonim tanpa nama 400.
+- Campaign uji dihapus semua (hapus campaign cascade ke transaksi) -> campaign 0,
+  transaksi 0.
+
+### Penting: kenapa QRIS tidak auto-confirm
+
+QRIS merchant GoPay = **QRIS statis**, tidak ada webhook dari GoPay ke merchant.
+Verifikasi kripto auto (tx hash ke explorer publik). QRIS & bank = manual admin.
+Endpoint `POST /api/donations/webhook` sudah disiapkan untuk payment gateway
+(future). Opsi QRIS dinamis & risikonya -> lihat
+`10-pilihan-qris-dinamis-auto-confirm.md`.
+
+---
+
+## 6. Update 22 Oktober 2026 (sesi sore): QRIS dinamis lokal + biaya MDR ditanggung donatur
+
+### Yang ditambahkan
+
+1. **Library QRIS dinamis lokal (gratis, tanpa API pembayaran).**
+   File baru: `artifacts/api-server/src/lib/qris.ts`.
+   - `crc16Ccitt` — CRC16-CCITT-FALSE (poly 0x1021, init 0xFFFF).
+   - `buildDynamicQris(staticPayload, amount)` — sisipkan tag 54 (nominal) tepat
+     setelah tag 53 (currency), lalu hitung ulang CRC. Tag lain TIDAK diubah
+     (merchant id di tag 26 sub-template 01, nama tag 59, kota tag 60, pos
+     tag 61, tag 62 payment constraints).
+   - `readQrisAmount(payload)` — baca tag 54.
+   - `inspectQrisPayload(payload)` — validasi struktur + nama merchant + merchant id.
+   - `computeQrisCharge(netAmount, feeBps)` — hitung gross-up MDR.
+   Donatur isi nominal -> QR yang di-scan **otomatis terisi nominal**.
+   Yang tetap manual: verifikasi status (masih QRIS statis dari sisi PJP).
+2. **Biaya MDR/biaya QRIS ditanggung donatur** (`donation_settings.qris_fee_bps`,
+   basis points persen: 70 = 0,70%).
+   - **Harus gross-up, bukan `amount + fee`** — MDR dipotong dari nominal yang
+     dibayar: `bayar = ceil(nominal / (1 - rate))`.
+     Contoh MDR 0,7%: donasi 10.000 -> QRIS 10.071 -> MDR dipotong 70 ->
+     masuk 10.001 (target tercapai). Cara naif `10.000 + 70` bikin merchant
+     rugi 2 rupiah pada nominal 50.000 (terbukti di tes).
+   - `donation_transactions.gross_amount` + `fee_amount` disimpan untuk
+     rekonsiliasi. `amount` tetap = nominal donasi bersih (yang masuk total
+     campaign). Method non-QRIS -> kedua kolom NULL.
+   - `qrisFeeBps = 0` -> tidak ada biaya tambahan sama sekali (no-op).
+3. **Fix bug route `PUT /admin/donations/settings`** — sebelumnya hanya
+   memproses subset field, jadi `cryptoNetwork`, `cryptoSymbol`,
+   `cryptoAddress`, `autoConfirm`, `minAmount`, dan `popup*` **tidak pernah
+   tersimpan** (domino kripto & popup tidak berfungsi). Sekarang semua field
+   diproses, field yang tidak dikirim tidak ter-reset, dan `null` eksplisit
+   tetap bisa mengosongkan field.
+4. **Frontend**: pratinjau biaya di form donasi, rincian nominal/biaya/total di
+   panel sukses, QR dengan nominal "yang harus dibayar" di halaman lacik,
+   input MDR di panel admin pengaturan, kolom "dibayar Rp X (fee Rp Y)" di
+   tabel transaksi admin.
+
+### File tes (jangan dihapus)
+
+- `artifacts/api-server/qris-fee-test.ts` — logika gross-up MDR.
+- `artifacts/api-server/qris-payload-verify.ts` — CRC, penempatan tag 54, tag
+  lain tetap utuh.
+- Jalankan dari `artifacts/api-server`:
+  `corepack pnpm exec tsx qris-fee-test.ts` / `... qris-payload-verify.ts`
+- Dua file ini di luar `src`, jadi tidak ikut `tsc` maupun bundling esbuild.
+
+### Deploy
+
+- Commit: `4378dd6` — *feat(donasi): QRIS dinamis lokal + biaya MDR ditanggung donatur*
+- Preview: `dpl_3Tu7E3cz2YJucDrR89TGufZfV3CX` (READY)
+- Production: `dpl_F6MwZLPbmgGX6fa4v3Ci4rMWyh8u` (READY)
+
+### Hasil verifikasi production
+
+- 3 artikel published (baseline aman), login admin OK.
+- MDR 0,7% (`qrisFeeBps=70`), donasi 10.000 -> `amount=10000`,
+  `grossAmount=10071`, `feeAmount=71`, tag 54 di payload = `10071`,
+  CRC payload `28BE` (cocok dengan fungsi backend), panjang 220 -> 229,
+  nama/merchant/kota utuh.
+- Halaman lacik mengembalikan payload identik (tag 54 = 10071).
+- MDR 0% -> gross = amount = 10000, fee = 0, tag 54 = 10000.
+- Browser production: pratinjau biaya di form tampil, panel sukses menampilkan
+  rincian + QR ter-render, panel admin menampilkan input MDR.
+- Semua data uji dibersihkan: campaign uji dihapus (cascade ke transaksi),
+  transaksi uji browser ditandai `rejected` + catatan, `qrisFeeBps` dikembalikan
+  ke 0.
+
+### Catatan PowerShell (jebakan)
+
+`ok($a -eq 3, "pesan")` **SALAH** — koma mengikat lebih kuat dari `-eq`, jadi
+`-eq` malah membandingkan dengan array. Bentuk yang benar:
+`ok ($a -eq 3) "pesan"` atau `ok(($a -eq 3), "pesan")`.
+Implementasi CRC16 manual di PowerShell juga gampang salah -> pakai fungsi
+`crc16Ccitt` milik backend (`artifacts/api-server/src/lib/qris.ts`) sebagai
+acuan.
+
+### Yang masih perlu user
+
+- **Nilai MDR merchant belum diketahui** -> `qrisFeeBps` sengaja 0 (default).
+  Cek ke PJP/bank: kategori "Donasi/Bantuan Sosial" = 0%, UMKM > Rp100rb = 0,7%,
+  umum = 0,3%. Kalau ternyata 0%, fitur biaya ini tidak dipakai sama sekali.
+- Auto-confirm QRIS tetap butuh gateway (EQRIS/dsb) + `tokenKey`,
+  `merchantId`, `merchantPhone` -> lihat `10-pilihan-qris-dinamis-auto-confirm.md`.
