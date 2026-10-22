@@ -243,9 +243,12 @@ Endpoint `POST /api/donations/webhook` sudah disiapkan untuk payment gateway
 
 ### Deploy
 
-- Commit: `4378dd6` — *feat(donasi): QRIS dinamis lokal + biaya MDR ditanggung donatur*
-- Preview: `dpl_3Tu7E3cz2YJucDrR89TGufZfV3CX` (READY)
-- Production: `dpl_F6MwZLPbmgGX6fa4v3Ci4rMWyh8u` (READY)
+- Commit fitur: `4378dd6` — *feat(donasi): QRIS dinamis lokal + biaya MDR ditanggung donatur*
+- Commit tes: `d0f8805` — *test(donasi): tambah tes logika QRIS dinamis & gross-up MDR*
+- Preview: `dpl_3Tu7E3cz2YJucDrR89TGufZfV3CX` (READY, 4378dd6)
+- Production: `dpl_F6MwZLPbmgGX6fa4v3Ci4rMWyh8u` (READY, 4378dd6) lalu
+  `dpl_A74srmM5FiMrqYzpLEfadu7twVTn` (READY, d0f8805) — **ini yang aktif
+  sekarang**. Verifikasi akhir (semua lulus) dijalankan terhadap d0f8805.
 
 ### Hasil verifikasi production
 

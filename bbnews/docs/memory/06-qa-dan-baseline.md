@@ -9,7 +9,7 @@
 | Artikel draft | **0** |
 | Total views | **174** (naik wajar dari 142 -> traffic) |
 | Artikel publik via API | **3** |
-| Deployment production aktif | `dpl_F6MwZLPbmgGX6fa4v3Ci4rMWyh8u` (commit `4378dd6`) |
+| Deployment production aktif | `dpl_A74srmM5FiMrqYzpLEfadu7twVTn` (commit `d0f8805`) |
 | Store blob | `bbnews-foto` / `store_9LikF3DMJKdbhRnr` |
 | Campaign donasi | 1 (`Full Test`, id=11 — dibuat sebelum sesi QRIS, bukan campaign uji sesi ini) |
 | Transaksi donasi | 1 (`rejected` — transaksi uji browser sesi QRIS, sudah ditandai catatan) |
@@ -141,3 +141,4 @@ Urutan pemeriksaan (JANGAN langsung menebak):
 | 2026-10 | `24f5ace` | `dpl_G519VHCviXtpviRE2NfPvyp9mv1B` | production READY — fix regex email (double-backslash) |
 | 2026-10 | `4378dd6` | `dpl_3Tu7E3cz2YJucDrR89TGufZfV3CX` | preview READY — QRIS dinamis lokal + biaya MDR |
 | 2026-10 | `4378dd6` | `dpl_F6MwZLPbmgGX6fa4v3Ci4rMWyh8u` | production READY — QRIS dinamis lokal (tag 54) + biaya MDR ditanggung donatur |
+| 2026-10 | `d0f8805` | `dpl_A74srmM5FiMrqYzpLEfadu7twVTn` | production READY — tambah 2 file tes QRIS (tanpa perubahan fungsi); **deployment aktif** |

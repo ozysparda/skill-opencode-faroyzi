@@ -127,6 +127,19 @@ Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/ozysparda/
 (Get-FileHash tmp.bin -Algorithm SHA256).Hash -eq (Get-FileHash '<file-lokal>' -Algorithm SHA256).Hash
 ```
 
+**Jebakan PowerShell (sudah diperbaiki 22 Okt 2026):** output native command
+(`git show`) dibaca memakai codepage console (CP437/CP850), jadi karakter
+non-ASCII jadi rusak -> file yang sebenarnya identik dilaporkan "BERBEDA".
+Skrip `verify-remote-file.ps1` sekarang set `[Console]::OutputEncoding = UTF8`.
+Kalau masih perlu cek manual, bandingkan **blob SHA** (bukan isi teks):
+
+```powershell
+git rev-parse "vercel:<path>"        # SHA blob di remote
+git hash-object "<file-lokal>"       # SHA blob file lokal (setara, sudah dinormalisasi)
+```
+
+Kedua SHA harus sama persis. Cara ini bebas masalah encoding & line ending.
+
 b. **Deployment READY + production**
 
 ```powershell
